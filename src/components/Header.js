@@ -63,7 +63,14 @@ const Header = () => {
           justifyContent="space-between"
           alignItems="center"
         >
-          <nav></nav>;
+          <nav>
+            {socials.map((e, i) => (
+              <a key={i} href={e.url} target="_blank">
+                <FontAwesomeIcon icon={e.icon} size="2x" />
+              </a>
+            ))}
+          </nav>
+          ;
           <nav>
             <HStack spacing={8}>
               {/* Add links to Projects and Contact me section */}
