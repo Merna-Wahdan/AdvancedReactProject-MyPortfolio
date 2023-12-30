@@ -21,6 +21,15 @@ const LandingSection = () => {
   const { isLoading, response, submit } = useSubmit();
   const { onOpen } = useAlertContext();
 
+  useEffect(() => {
+    if (response && response.type && response.message) {
+      onOpen(response.type, response.message);
+    }
+    if (response && response.type === "success") {
+      formik.resetForm();
+    }
+  }, [response]);
+
   const formik = useFormik({
     initialValues: {
       firstName: "",
@@ -28,10 +37,8 @@ const LandingSection = () => {
       type: "hireMe",
       comment: "",
     },
-    onSubmit: async (values, { resetForm }) => {
-      console.log("ON SUBMIT", values);
+    onSubmit: async (values) => {
       await submit("/", values);
-      resetForm();
     },
 
     validationSchema: Yup.object({
@@ -108,12 +115,11 @@ const LandingSection = () => {
                 type="submit"
                 colorScheme="purple"
                 width="full"
-                // disabled={isLoading}
+                disabled={isLoading}
               >
                 Submit
               </Button>
             </VStack>
-            {response && <div>{response.message}</div>}
           </form>
         </Box>
       </VStack>
