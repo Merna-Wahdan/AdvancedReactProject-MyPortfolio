@@ -30,6 +30,7 @@ const LandingSection = () => {
     },
     onSubmit: (values) => {
       submit("/", values);
+      resetForm();
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required(),
@@ -96,10 +97,17 @@ const LandingSection = () => {
                 <Textarea id="comment" name="comment" height={250} />
                 <FormErrorMessage>Message is required</FormErrorMessage>
               </FormControl>
-              <Button type="submit" colorScheme="purple" width="full">
+              <Button
+                type="submit"
+                colorScheme="purple"
+                width="full"
+                disabled={isLoading}
+              >
                 Submit
               </Button>
             </VStack>
+            {response && <div>{response.message}</div>}
+            {onOpen}
           </form>
         </Box>
       </VStack>
