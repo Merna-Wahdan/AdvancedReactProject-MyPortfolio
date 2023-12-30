@@ -33,7 +33,7 @@ const LandingSection = () => {
     },
     validationSchema: Yup.object({
       firstName: Yup.string().required(),
-      email: Yup.string().email(),
+      email: Yup.string().email().required(),
       type: Yup.string(),
       comment: Yup.string(),
     }),
@@ -53,18 +53,22 @@ const LandingSection = () => {
         <Box p={6} rounded="md" w="100%">
           <form onSubmit={formik.handleSubmit}>
             <VStack spacing={4}>
-              <FormControl isInvalid={false}>
+              <FormControl
+                isInvalid={formik.touched.firstName && formik.errors.firstName}
+                isRequired
+              >
                 <FormLabel htmlFor="firstName">Name</FormLabel>
                 <Input
                   {...formik.getFieldProps("firstName")}
                   id="firstName"
                   name="firstName"
                 />
-                <FormErrorMessage>
-                  {(isInvalid = true) ? "Required" : ""}
-                </FormErrorMessage>
+                <FormErrorMessage>Name is Required</FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={false}>
+              <FormControl
+                isInvalid={formik.touched.email && formik.errors.email}
+                isRequired
+              >
                 <FormLabel htmlFor="email">Email Address</FormLabel>
                 <Input
                   {...formik.getFieldProps("email")}
@@ -72,7 +76,7 @@ const LandingSection = () => {
                   name="email"
                   type="email"
                 />
-                <FormErrorMessage></FormErrorMessage>
+                <FormErrorMessage>Email is required</FormErrorMessage>
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
@@ -84,10 +88,13 @@ const LandingSection = () => {
                   <option value="other">Other</option>
                 </Select>
               </FormControl>
-              <FormControl isInvalid={false}>
+              <FormControl
+                isInvalid={formik.touched.comment && formik.errors.comment}
+                isRequired
+              >
                 <FormLabel htmlFor="comment">Your message</FormLabel>
                 <Textarea id="comment" name="comment" height={250} />
-                <FormErrorMessage></FormErrorMessage>
+                <FormErrorMessage>Message is required</FormErrorMessage>
               </FormControl>
               <Button type="submit" colorScheme="purple" width="full">
                 Submit
