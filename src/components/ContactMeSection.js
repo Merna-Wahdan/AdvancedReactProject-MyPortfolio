@@ -25,17 +25,19 @@ const LandingSection = () => {
     initialValues: {
       firstName: "",
       email: "",
-      type: "",
+      type: "hireMe",
       comment: "",
     },
-    onSubmit: (values) => {
-      submit("/", values);
+    onSubmit: async (values, { resetForm }) => {
+      console.log("ON SUBMIT", values);
+      await submit("/", values);
       resetForm();
     },
+
     validationSchema: Yup.object({
       firstName: Yup.string().required(),
       email: Yup.string().email().required(),
-      type: Yup.string(),
+      type: Yup.string().required(),
       comment: Yup.string(),
     }),
   });
@@ -81,7 +83,7 @@ const LandingSection = () => {
               </FormControl>
               <FormControl>
                 <FormLabel htmlFor="type">Type of enquiry</FormLabel>
-                <Select id="type" name="type">
+                <Select {...formik.getFieldProps("type")} id="type" name="type">
                   <option value="hireMe">Freelance project proposal</option>
                   <option value="openSource">
                     Open source consultancy session
@@ -94,20 +96,24 @@ const LandingSection = () => {
                 isRequired
               >
                 <FormLabel htmlFor="comment">Your message</FormLabel>
-                <Textarea id="comment" name="comment" height={250} />
+                <Textarea
+                  {...formik.getFieldProps("comment")}
+                  id="comment"
+                  name="comment"
+                  height={250}
+                />
                 <FormErrorMessage>Message is required</FormErrorMessage>
               </FormControl>
               <Button
                 type="submit"
                 colorScheme="purple"
                 width="full"
-                disabled={isLoading}
+                // disabled={isLoading}
               >
                 Submit
               </Button>
             </VStack>
             {response && <div>{response.message}</div>}
-            {onOpen}
           </form>
         </Box>
       </VStack>
