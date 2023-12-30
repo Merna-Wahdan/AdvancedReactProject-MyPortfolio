@@ -23,19 +23,19 @@ const LandingSection = () => {
 
   const formik = useFormik({
     initialValues: {
-      firstName,
-      email,
-      type,
-      comment,
+      firstName: "",
+      email: "",
+      type: "",
+      comment: "",
     },
     onSubmit: (values) => {
-      url, data;
+      submit("/", values);
     },
     validationSchema: Yup.object({
-      firstName,
-      email,
-      type,
-      comment,
+      firstName: Yup.string().required(),
+      email: Yup.string().email(),
+      type: Yup.string(),
+      comment: Yup.string(),
     }),
   });
 
@@ -51,16 +51,27 @@ const LandingSection = () => {
           Contact me
         </Heading>
         <Box p={6} rounded="md" w="100%">
-          <form>
+          <form onSubmit={formik.handleSubmit}>
             <VStack spacing={4}>
               <FormControl isInvalid={false}>
                 <FormLabel htmlFor="firstName">Name</FormLabel>
-                <Input id="firstName" name="firstName" />
-                <FormErrorMessage></FormErrorMessage>
+                <Input
+                  {...formik.getFieldProps("firstName")}
+                  id="firstName"
+                  name="firstName"
+                />
+                <FormErrorMessage>
+                  {(isInvalid = true) ? "Required" : ""}
+                </FormErrorMessage>
               </FormControl>
               <FormControl isInvalid={false}>
                 <FormLabel htmlFor="email">Email Address</FormLabel>
-                <Input id="email" name="email" type="email" />
+                <Input
+                  {...formik.getFieldProps("email")}
+                  id="email"
+                  name="email"
+                  type="email"
+                />
                 <FormErrorMessage></FormErrorMessage>
               </FormControl>
               <FormControl>
